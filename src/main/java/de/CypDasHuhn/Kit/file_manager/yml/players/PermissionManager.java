@@ -1,7 +1,7 @@
-package de.CypDasHuhn.TP.file_manager.player_manager;
+package de.CypDasHuhn.Kit.file_manager.yml.players;
 
-import de.CypDasHuhn.TP.file_manager.CustomFiles;
-import de.CypDasHuhn.TP.shared.Finals;
+import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
+import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class PermissionManager {

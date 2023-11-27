@@ -1,6 +1,6 @@
-package de.CypDasHuhn.TP.command.general;
+package de.CypDasHuhn.Kit.command.general;
 
-import de.CypDasHuhn.TP.command.skeleton.SkeletonCommand;
+import de.CypDasHuhn.Kit.command.skeleton.SkeletonCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -21,7 +21,7 @@ public class CustomTabCompleter implements TabCompleter {
             String commandLabel = entry.getKey();
             String[] aliases = entry.getValue();
 
-            if (label.equalsIgnoreCase(commandLabel) || Arrays.stream(aliases).anyMatch(alias -> label.equalsIgnoreCase(alias))) {
+            if (label.equalsIgnoreCase(commandLabel) || Arrays.stream(aliases).anyMatch(label::equalsIgnoreCase)) {
                 SkeletonCommand skeletonCommand = CustomCommand.commandMap.get(commandLabel);
                 arguments = skeletonCommand.completer(sender, args, label);
             }

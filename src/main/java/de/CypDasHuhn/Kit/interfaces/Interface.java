@@ -1,5 +1,8 @@
-package de.CypDasHuhn.Kit;
+package de.CypDasHuhn.Kit.interfaces;
 
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManager;
+import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterface;
+import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterfaceListener;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 

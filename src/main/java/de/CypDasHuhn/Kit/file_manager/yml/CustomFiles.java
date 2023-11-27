@@ -1,6 +1,6 @@
-package de.CypDasHuhn.TP.file_manager;
+package de.CypDasHuhn.Kit.file_manager.yml;
 
-import de.CypDasHuhn.TP.main.Main;
+import de.CypDasHuhn.Kit.KitPluginMain;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,7 +12,7 @@ public class CustomFiles {
     private File file;
     private FileConfiguration customFile;
     public FileConfiguration getFileConfiguration(String name, String folder) {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin(Main.pluginName).getDataFolder()+"/"+folder, name+".yml");
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin(KitPluginMain.pluginName).getDataFolder()+"/"+folder, name+".yml");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -52,7 +52,7 @@ public class CustomFiles {
     }
 
     public void delete(String name, String folder) {
-        File file = new File(Bukkit.getServer().getPluginManager().getPlugin(Main.pluginName).getDataFolder() + "/" + folder, name + ".yml");
+        File file = new File(Bukkit.getServer().getPluginManager().getPlugin(KitPluginMain.pluginName).getDataFolder() + "/" + folder, name + ".yml");
 
         if (file.exists()) {
             if (file.isDirectory()) {

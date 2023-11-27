@@ -1,0 +1,20 @@
+name: KitPlugin
+version: 4.0
+main: de.CypDasHuhn.Kit.KitPluginMain
+api-version: '1.20'
+
+commands:
+  kit:
+    aliases: k
+  kitSet:
+    aliases: [kSet, ks]
+  kitDelete:
+    aliases: [kDelete, kd]
+  kitEdit:
+    aliases: [kEdit, ke]
+  kitRandom:
+    aliases:  [kRandom, kr]
+  kitPermission:
+    aliases: [kPermission, kp]
+  kitLanguage:
+    aliases: [kLanguage, kl]
