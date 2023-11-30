@@ -5,7 +5,7 @@ import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class PlayerDataManager {
+public class PlayerDataManagerYML {
     public static final String dataFileDir = "Data";
     public static final String inventoryDir = "Inventory";
     public static final String pageDir = "Page";

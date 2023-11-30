@@ -1,6 +1,6 @@
 package de.CypDasHuhn.Kit.message;
 
-import de.CypDasHuhn.Kit.file_manager.yml.players.LocaleManager;
+import de.CypDasHuhn.Kit.file_manager.yml.players.LocaleManagerYML;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,7 +30,7 @@ public class Message {
 
     public static String getMessage(Player player, String message) {
         if (message == null) return null;
-        ResourceBundle messagesBundle = ResourceBundle.getBundle("messages", LocaleManager.getLocale(player));
+        ResourceBundle messagesBundle = ResourceBundle.getBundle("messages", LocaleManagerYML.getLocale(player));
         return messagesBundle.getString(message);
     }
 

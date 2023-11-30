@@ -4,13 +4,13 @@ import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
 import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class PermissionManager {
+public class PermissionManagerYML {
     private static final String PERMISSION_FILE_NAME = "Permission";
     private static final String AMOUNT_DIRECTORY = "Amount";
     private static final String PLAYERS_DIRECTORY = "Players";
     public static void add(String playerName) {
         // check
-        boolean exists = PlayerListManager.existsByName(playerName);
+        boolean exists = PlayerListManagerYML.existsByName(playerName);
         if (!exists) return;
 
         boolean isPermissioned = isPermissioned(playerName);
@@ -19,7 +19,7 @@ public class PermissionManager {
         CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
         FileConfiguration permissionConfig = customFiles[0].getFileConfiguration(PERMISSION_FILE_NAME,"");
         int amount = permissionConfig.getInt(AMOUNT_DIRECTORY);
-        String UUID = PlayerListManager.getByName(playerName);
+        String UUID = PlayerListManagerYML.getByName(playerName);
         // add
         permissionConfig.set(AMOUNT_DIRECTORY, amount+1);
         permissionConfig.set(PLAYERS_DIRECTORY+"."+amount, UUID);
@@ -29,7 +29,7 @@ public class PermissionManager {
 
     public static void remove(String playerName) {
         // check
-        boolean exists = PlayerListManager.existsByName(playerName);
+        boolean exists = PlayerListManagerYML.existsByName(playerName);
         if (!exists) return;
 
         boolean isPermissioned = isPermissioned(playerName);
@@ -52,7 +52,7 @@ public class PermissionManager {
 
     public static boolean isPermissioned(String playerName) {
         // check
-        boolean exists = PlayerListManager.existsByName(playerName);
+        boolean exists = PlayerListManagerYML.existsByName(playerName);
         if (!exists) return false;
         //find
         int permissionID = getPermissionID(playerName);
@@ -64,7 +64,7 @@ public class PermissionManager {
         // prework
         CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
         FileConfiguration permissionConfig = customFiles[0].getFileConfiguration(PERMISSION_FILE_NAME,"");
-        String UUID = PlayerListManager.getByName(playerName);
+        String UUID = PlayerListManagerYML.getByName(playerName);
         int amount = permissionConfig.getInt(AMOUNT_DIRECTORY);
         int targetID = Finals.NULL_INT;
         // find

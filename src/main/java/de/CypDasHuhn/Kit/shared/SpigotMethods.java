@@ -5,8 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -104,5 +106,17 @@ public class SpigotMethods {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    public static ItemStack[] inventoryToArray(PlayerInventory inventory) {
+        int size = inventory.getSize();
+        ItemStack[] items = new ItemStack[size];
+
+        // Get main inventory items
+        for (int i = 0; i < inventory.getSize(); i++) {
+            items[i] = inventory.getItem(i);
+        }
+
+        return items;
     }
 }

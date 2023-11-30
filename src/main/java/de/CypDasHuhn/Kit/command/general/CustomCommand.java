@@ -1,5 +1,6 @@
 package de.CypDasHuhn.Kit.command.general;
 
+import de.CypDasHuhn.Kit.command.KitCommand;
 import de.CypDasHuhn.Kit.command.KitSetCommand;
 import de.CypDasHuhn.Kit.command.skeleton.SkeletonCommand;
 import org.bukkit.command.CommandExecutor;
@@ -10,10 +11,12 @@ import java.util.HashMap;
 
 public class CustomCommand implements CommandExecutor {
     public static final HashMap<String, SkeletonCommand> commandMap = new HashMap<String, SkeletonCommand>(){{
+        put(KitCommand.KIT_COMMAND, new KitCommand());
         put(KitSetCommand.KIT_SET_COMMAND, new KitSetCommand());
     }};
 
     public static final HashMap<String, String[]> aliasesMap = new HashMap<String, String[]>(){{
+        put(KitCommand.KIT_COMMAND, new String[]{"kit", "k"});
         put(KitSetCommand.KIT_SET_COMMAND, new String[]{"kitSet", "kSet","ks"});
     }};
 

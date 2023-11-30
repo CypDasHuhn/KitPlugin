@@ -1,6 +1,6 @@
 package de.CypDasHuhn.Kit.listeners;
 
-import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManager;
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
 import de.CypDasHuhn.Kit.interfaces.Interface;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +19,7 @@ public class InventoryCloseListener implements Listener {
         }
 
         if (!currentlyOpening) {
-            PlayerDataManager.setInventory(player, null);
+            PlayerDataManagerYML.setInventory(player, null);
         }
     }
 }

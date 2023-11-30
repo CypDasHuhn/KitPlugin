@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerListManager {
+public class PlayerListManagerYML {
     public static boolean existsByUUID(String UUID) {
         String player = getByUUID(UUID);
         boolean exists = player != null;

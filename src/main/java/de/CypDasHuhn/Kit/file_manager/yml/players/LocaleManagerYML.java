@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
-public class LocaleManager {
+public class LocaleManagerYML {
     public static final List<String> locales = Arrays.asList("en", "de");
     public static final String defaultLocale = locales.get(0); // en
 

@@ -1,6 +1,6 @@
 package de.CypDasHuhn.Kit.interfaces;
 
-import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManager;
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
 import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterface;
 import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterfaceListener;
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ public class Interface {
         if (!interfaceMap.containsKey(interfaceName)) return;
 
         opening.put(player, true);
-        PlayerDataManager.setInventory(player, interfaceName);
+        PlayerDataManagerYML.setInventory(player, interfaceName);
 
         SkeletonInterface skeletonInterface = interfaceMap.get(interfaceName);
 
@@ -33,7 +33,7 @@ public class Interface {
     }
 
     public static void openCurrentInterface(Player player, Object... vars) {
-        String interfaceName = PlayerDataManager.getInventory(player);
+        String interfaceName = PlayerDataManagerYML.getInventory(player);
 
         openTargetInterface(player, interfaceName, vars);
     }

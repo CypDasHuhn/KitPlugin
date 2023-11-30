@@ -1,15 +1,13 @@
-package de.CypDasHuhn.Kit.file_manager.yml.items;
+package de.CypDasHuhn.Kit.file_manager.routing.items;
 
-import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
-import de.CypDasHuhn.Kit.shared.Finals;
+import de.CypDasHuhn.Kit.KitPluginMain;
+import de.CypDasHuhn.Kit.file_manager.sql.items.KitClassManagerSQL;
+import de.CypDasHuhn.Kit.file_manager.yml.items.KitClassManagerYML;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class KitClassManager {
-
     public static final HashMap<String, ChatColor> colorMap = new HashMap<String, ChatColor>(){{
         put("DEFAULT", ChatColor.of("#956595"));
         put("WHITE", ChatColor.of("#E0E5E5"));
@@ -29,12 +27,7 @@ public class KitClassManager {
         put("MAGENTA", ChatColor.of("#B73EAC"));
         put("PINK", ChatColor.of("#EF89A7"));
     }};
-
-    public static List<String> getClasses() {
-        // prework
-        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
-        FileConfiguration userProvidedConfig = customFiles[0].getFileConfiguration(Finals.USER_PROVIDED_CONFIG,"");
-        return null;
-
+    public static HashMap<String, String> getClasses() {
+        return KitPluginMain.usesSQL ? KitClassManagerSQL.getClasses() : KitClassManagerYML.getClasses();
     }
 }

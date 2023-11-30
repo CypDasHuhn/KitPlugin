@@ -1,6 +1,6 @@
 package de.CypDasHuhn.Kit.listeners;
 
-import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerListManager;
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerListManagerYML;
 import de.CypDasHuhn.Kit.interfaces.Interface;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,15 +12,15 @@ public class PlayerJoinListener implements Listener {
     public void playerJoinListener(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
-        boolean nameExists = PlayerListManager.existsByName(playerName);
+        boolean nameExists = PlayerListManagerYML.existsByName(playerName);
         if (!nameExists) {
             String playerUUID = player.getUniqueId().toString();
-            boolean uuidExists = PlayerListManager.existsByUUID(playerUUID);
+            boolean uuidExists = PlayerListManagerYML.existsByUUID(playerUUID);
             Interface.opening.put(player, false);
             if (!uuidExists) {
-                PlayerListManager.addPlayer(playerName, playerUUID);
+                PlayerListManagerYML.addPlayer(playerName, playerUUID);
             } else {
-                PlayerListManager.replacePlayerName(playerName, playerUUID);
+                PlayerListManagerYML.replacePlayerName(playerName, playerUUID);
             }
         }
     }

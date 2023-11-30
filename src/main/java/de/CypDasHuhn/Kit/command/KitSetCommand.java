@@ -1,12 +1,19 @@
 package de.CypDasHuhn.Kit.command;
 
+import de.CypDasHuhn.Kit.DTO.KitDTO;
 import de.CypDasHuhn.Kit.command.skeleton.SkeletonCommand;
-import de.CypDasHuhn.Kit.file_manager.yml.items.KitClassManager;
+import de.CypDasHuhn.Kit.file_manager.routing.items.KitClassManager;
+import de.CypDasHuhn.Kit.file_manager.routing.items.KitManager;
+import de.CypDasHuhn.Kit.file_manager.yml.items.KitClassManagerYML;
+import de.CypDasHuhn.Kit.shared.SpigotMethods;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,15 +24,29 @@ public class KitSetCommand extends SkeletonCommand {
     public void command(CommandSender sender, String[] args, String label) {
         if (!(sender instanceof Player player)) return; // command blocks don't have an inventory
 
-        for (Map.Entry<String, ChatColor> entry : KitClassManager.colorMap.entrySet()) {
-            String text = entry.getKey();
-            ChatColor color = entry.getValue();
-            player.sendMessage(color + text);
-        }
+        if (args.length < 2) return;
+        String kitName = args[0];
+        String kitClass = args[1];
+
+        ItemStack[] inventory = SpigotMethods.inventoryToArray(player.getInventory());
+
+        KitDTO kit = new KitDTO(kitName, kitClass,inventory,null,false);
+
+        KitManager.registerKit(kit);
     }
 
     @Override
     public List<String> completer(CommandSender sender, String[] args, String label) {
-        return new ArrayList<String>(){{add("wip");}};
+        List<String> arguments = new ArrayList<String>();
+
+        if (args.length == 1) {
+            arguments.add("[Name]");
+        }
+        else if (args.length == 2) {
+            List<String> classes = KitClassManager.getClasses().keySet().stream().toList();
+            arguments.addAll(classes);
+        }
+
+        return arguments;
     }// /ks [kit name] [optional: Classname]
 }

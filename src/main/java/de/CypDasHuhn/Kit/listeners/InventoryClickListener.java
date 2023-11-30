@@ -1,6 +1,6 @@
 package de.CypDasHuhn.Kit.listeners;
 
-import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManager;
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
 import de.CypDasHuhn.Kit.interfaces.Interface;
 import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterfaceListener;
 import de.CypDasHuhn.Kit.shared.Finals;
@@ -15,7 +15,7 @@ public class InventoryClickListener implements Listener {
     @EventHandler
     public void inventoryClickListener(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        String inventory = PlayerDataManager.getInventory(player);
+        String inventory = PlayerDataManagerYML.getInventory(player);
 
         boolean emptyInventory = inventory.equals(Finals.EMPTY);
         if (emptyInventory) return;
