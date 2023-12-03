@@ -4,6 +4,7 @@ import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
 import de.CypDasHuhn.Kit.interfaces.Interface;
 import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterfaceListener;
 import de.CypDasHuhn.Kit.shared.Finals;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,5 +34,6 @@ public class InventoryClickListener implements Listener {
 
         SkeletonInterfaceListener listener = Interface.listenerMap.get(inventory);
         listener.listener(event, player, clickedItem, clickedMaterial, clickedSlot);
+
     }
 }

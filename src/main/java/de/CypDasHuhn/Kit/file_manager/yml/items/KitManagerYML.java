@@ -3,16 +3,30 @@ package de.CypDasHuhn.Kit.file_manager.yml.items;
 import de.CypDasHuhn.Kit.DTO.KitDTO;
 import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
 import de.CypDasHuhn.Kit.shared.Finals;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.checkerframework.checker.units.qual.K;
+
 
 public class KitManagerYML {
     public static void registerKit(KitDTO kit) {
+        // other calls
+        setKit(kit);
+        KitListManagerYML.add(kit.kitName);
+    }
+
+    public static void setKit(KitDTO kit) {
+        // prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        FileConfiguration kitConfig = customFiles[0].getFileConfiguration(kit.kitName,"Kit");
+
+        kitConfig.set("Class", kit.kitClass);
+
+        CustomFiles.saveArray(customFiles);
+
+        setInventory(kit);
+    }
+
+    public static void setInventory(KitDTO kit) {
         // prework
         CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
         FileConfiguration kitConfig = customFiles[0].getFileConfiguration(kit.kitName,"Kit");
@@ -22,8 +36,25 @@ public class KitManagerYML {
         }
 
         CustomFiles.saveArray(customFiles);
+    }
 
-        KitListManagerYML.add(kit.kitName);
+    public static void deleteKit(KitDTO kit) {
+        // delete
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        customFiles[0].delete(kit.kitName, "Kit");
+        // remove in list
+        KitListManagerYML.remove(kit.kitName);
+    }
+
+    public static void renameKit(KitDTO kit, String newName) {
+        // rename in list
+        KitListManagerYML.replace(kit.kitName, newName);
+        // delete original
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        customFiles[0].delete(kit.kitName, "Kit");
+        // save new
+        kit.kitName = newName;
+        setKit(kit);
     }
 
     public static KitDTO getKit(String kitName) {

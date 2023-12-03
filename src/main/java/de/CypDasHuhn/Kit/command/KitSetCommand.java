@@ -24,15 +24,32 @@ public class KitSetCommand extends SkeletonCommand {
     public void command(CommandSender sender, String[] args, String label) {
         if (!(sender instanceof Player player)) return; // command blocks don't have an inventory
 
-        if (args.length < 2) return;
+        if (args.length < 1) {
+            player.sendMessage("no kitname");
+            return;
+        }
         String kitName = args[0];
+
+
+        if (args.length < 2) {
+            player.sendMessage("no kitclass given");
+            return;
+        }
         String kitClass = args[1];
+
+        boolean kitClassExists = KitClassManager.getClasses().containsKey(kitClass);
+        if (!kitClassExists) {
+            player.sendMessage("no kitclass found");
+            return;
+        }
 
         ItemStack[] inventory = SpigotMethods.inventoryToArray(player.getInventory());
 
         KitDTO kit = new KitDTO(kitName, kitClass,inventory,null,false);
 
         KitManager.registerKit(kit);
+
+        player.sendMessage("durchgekommen");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package de.CypDasHuhn.Kit.shared;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,9 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class SpigotMethods {
     public static Player getPlayer(String playerString, Location location) {
@@ -65,7 +69,7 @@ public class SpigotMethods {
         return nearestPlayer;
     }
 
-    public static ItemStack createItem(Material material, String name, boolean enchanted, List<String> lore) {
+    public static ItemStack createItem(Material material, String name, boolean enchanted, List<String> lore, String base64Texture) {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -78,6 +82,20 @@ public class SpigotMethods {
         if (enchanted) {
             itemMeta.addEnchant(Enchantment.DAMAGE_ALL, 0, true);
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+
+        if (base64Texture != null) {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), "null");
+            profile.getProperties().put("textures", new Property("textures", base64Texture));
+
+            try {
+                Field profileField = itemMeta.getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+                profileField.set(itemMeta, profile);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
 
         itemStack.setItemMeta(itemMeta);

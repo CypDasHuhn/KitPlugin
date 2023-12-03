@@ -1,11 +1,11 @@
 package de.CypDasHuhn.Kit.file_manager.yml.items;
 
+import de.CypDasHuhn.Kit.DTO.KitDTO;
 import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
 import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class KitListManagerYML {
     public static void add(String kitName) {
@@ -45,19 +45,19 @@ public class KitListManagerYML {
             String nextKit = kitListConfig.getString("Id."+(i+1));
             kitListConfig.set("Id."+i, nextKit);
         }
-        kitListConfig.set("amount", amount-1);
-        kitListConfig.set("id."+(amount-1), Finals.EMPTY);
+        kitListConfig.set("Amount", amount-1);
+        kitListConfig.set("Id."+(amount-1), Finals.EMPTY);
         // Save
         CustomFiles.saveArray(customFiles);
     }
 
-    public static void replace(String newKitName, String oldKitName) {
+    public static void replace(String oldKitName, String newKitName) {
         // prework
         CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
         FileConfiguration kitListConfig = customFiles[0].getFileConfiguration("KitList","");
         int targetId = findId(oldKitName);
         // set
-        kitListConfig.set("id."+targetId, newKitName);
+        kitListConfig.set("Id."+targetId, newKitName);
         // save
         CustomFiles.saveArray(customFiles);
     }
@@ -74,5 +74,27 @@ public class KitListManagerYML {
             kits.add(item);
         }
         return kits;
+    }
+
+    public static KitDTO getRandomKit(List<String> kits) {
+        int randomId = new Random().nextInt(kits.size());
+        // find
+        String kitName = kits.get(randomId);
+        KitDTO kit = KitManagerYML.getKit(kitName);
+
+        return kit;
+    }
+
+    public static List<String> sortKits(List<String> kitNames) {
+        Map<String, String> kitMapping = new HashMap<>();
+
+        for (String kitName : kitNames) {
+            KitDTO kit = KitManagerYML.getKit(kitName);
+            kitMapping.put(kitName, kit.kitClass);
+        }
+
+        kitNames.sort(Comparator.comparing(kitMapping::get));
+
+        return kitNames;
     }
 }

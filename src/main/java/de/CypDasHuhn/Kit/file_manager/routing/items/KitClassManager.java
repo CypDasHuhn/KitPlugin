@@ -4,6 +4,7 @@ import de.CypDasHuhn.Kit.KitPluginMain;
 import de.CypDasHuhn.Kit.file_manager.sql.items.KitClassManagerSQL;
 import de.CypDasHuhn.Kit.file_manager.yml.items.KitClassManagerYML;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 
 import java.util.HashMap;
 
@@ -27,6 +28,26 @@ public class KitClassManager {
         put("MAGENTA", ChatColor.of("#B73EAC"));
         put("PINK", ChatColor.of("#EF89A7"));
     }};
+    public static final HashMap<String, Material> materialMap = new HashMap<String, Material>(){{
+        put("DEFAULT", Material.SHULKER_BOX);
+        put("WHITE", Material.WHITE_SHULKER_BOX);
+        put("LIGHT_GRAY", Material.LIGHT_GRAY_SHULKER_BOX);
+        put("GRAY", Material.GRAY_SHULKER_BOX);
+        put("BLACK", Material.BLACK_SHULKER_BOX);
+        put("BROWN", Material.BROWN_SHULKER_BOX);
+        put("RED", Material.RED_SHULKER_BOX);
+        put("ORANGE", Material.ORANGE_SHULKER_BOX);
+        put("YELLOW", Material.YELLOW_SHULKER_BOX);
+        put("LIME", Material.LIME_SHULKER_BOX);
+        put("GREEN", Material.GREEN_SHULKER_BOX);
+        put("CYAN", Material.CYAN_SHULKER_BOX);
+        put("LIGHT_BLUE", Material.LIGHT_BLUE_SHULKER_BOX);
+        put("BLUE", Material.BLUE_SHULKER_BOX);
+        put("PURPLE", Material.PURPLE_SHULKER_BOX);
+        put("MAGENTA", Material.MAGENTA_SHULKER_BOX);
+        put("PINK", Material.PINK_SHULKER_BOX);
+    }};
+
     public static HashMap<String, String> getClasses() {
         return KitPluginMain.usesSQL ? KitClassManagerSQL.getClasses() : KitClassManagerYML.getClasses();
     }

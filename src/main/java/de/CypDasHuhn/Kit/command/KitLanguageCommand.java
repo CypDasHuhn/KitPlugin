@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class KitLanguageCommand extends SkeletonCommand {
+    public static final String KIT_LANGUAGE_COMMAND = "kitLanguage";
     @Override
     public void command(CommandSender sender, String[] args, String label) {
         if (sender instanceof Player player) {
