@@ -1,7 +1,7 @@
-package de.CypDasHuhn.TP.file_manager.player_manager;
+package de.CypDasHuhn.Kit.file_manager.yml.players;
 
-import de.CypDasHuhn.TP.file_manager.CustomFiles;
-import de.CypDasHuhn.TP.shared.Finals;
+import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
+import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class PlayerListManager {
         return players;
     }
 
-    public static void add(String name, String UUID) {
+    public static void addPlayer(String name, String UUID) {
         // Prework
         CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
         FileConfiguration playersConfig = customFiles[0].getFileConfiguration("Players","");
@@ -68,7 +68,7 @@ public class PlayerListManager {
         CustomFiles.saveArray(customFiles);
     }
 
-    public static void replaceName(String name, String UUID) {
+    public static void replacePlayerName(String name, String UUID) {
         // Prework
         CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
         FileConfiguration playersConfig = customFiles[0].getFileConfiguration("Players","");

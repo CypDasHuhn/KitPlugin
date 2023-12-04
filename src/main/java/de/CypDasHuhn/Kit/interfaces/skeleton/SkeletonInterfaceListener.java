@@ -1,4 +1,4 @@
-package de.CypDasHuhn.Kit;
+package de.CypDasHuhn.Kit.interfaces.skeleton;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

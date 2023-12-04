@@ -1,9 +1,9 @@
-package de.CypDasHuhn.TP.listeners;
+package de.CypDasHuhn.Kit.listeners;
 
-import de.CypDasHuhn.TP.file_manager.player_manager.PlayerDataManager;
-import de.CypDasHuhn.TP.interfaces.Interface;
-import de.CypDasHuhn.TP.interfaces.skeleton.SkeletonInterfaceListener;
-import de.CypDasHuhn.TP.shared.Finals;
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManager;
+import de.CypDasHuhn.Kit.interfaces.Interface;
+import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterfaceListener;
+import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

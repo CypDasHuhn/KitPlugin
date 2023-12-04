@@ -1,10 +1,8 @@
-package de.CypDasHuhn.TP.shared;
+package de.CypDasHuhn.Kit.shared;
 
-import de.CypDasHuhn.TP.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;

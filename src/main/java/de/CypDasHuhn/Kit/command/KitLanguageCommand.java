@@ -1,2 +1,22 @@
-package de.CypDasHuhn.Kit.command;public class KitLanguageCommand {
+package de.CypDasHuhn.Kit.command;
+
+import de.CypDasHuhn.Kit.command.skeleton.SkeletonCommand;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class KitLanguageCommand extends SkeletonCommand {
+    @Override
+    public void command(CommandSender sender, String[] args, String label) {
+        if (sender instanceof Player player) {
+            player.sendMessage("wip");
+        }
+    }
+
+    @Override
+    public List<String> completer(CommandSender sender, String[] args, String label) {
+        return new ArrayList<String>(){{add("wip");}};
+    }
 }

@@ -1,7 +1,7 @@
-package de.CypDasHuhn.TP.listeners;
+package de.CypDasHuhn.Kit.listeners;
 
-import de.CypDasHuhn.TP.file_manager.player_manager.PlayerListManager;
-import de.CypDasHuhn.TP.interfaces.Interface;
+import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerListManager;
+import de.CypDasHuhn.Kit.interfaces.Interface;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,9 +18,9 @@ public class PlayerJoinListener implements Listener {
             boolean uuidExists = PlayerListManager.existsByUUID(playerUUID);
             Interface.opening.put(player, false);
             if (!uuidExists) {
-                PlayerListManager.add(playerName, playerUUID);
+                PlayerListManager.addPlayer(playerName, playerUUID);
             } else {
-                PlayerListManager.replaceName(playerName, playerUUID);
+                PlayerListManager.replacePlayerName(playerName, playerUUID);
             }
         }
     }
