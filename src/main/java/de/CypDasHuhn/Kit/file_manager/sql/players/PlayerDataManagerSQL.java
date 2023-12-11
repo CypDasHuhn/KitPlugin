@@ -3,6 +3,7 @@ package de.CypDasHuhn.Kit.file_manager.sql.players;
 import de.CypDasHuhn.Kit.DTO.interface_context.ConfirmationContextDTO;
 import de.CypDasHuhn.Kit.DTO.interface_context.KitContextDTO;
 import de.CypDasHuhn.Kit.DTO.interface_context.OverviewContextDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.ShopContextDTO;
 import org.bukkit.entity.Player;
 
 public class PlayerDataManagerSQL {
@@ -25,5 +26,12 @@ public class PlayerDataManagerSQL {
     }
 
     public static void setConfirmationContext(Player player, ConfirmationContextDTO context) {
+    }
+
+    public static void setShopContext(Player player, ShopContextDTO context) {
+    }
+
+    public static ShopContextDTO getShopContext(Player player) {
+        return null;
     }
 }

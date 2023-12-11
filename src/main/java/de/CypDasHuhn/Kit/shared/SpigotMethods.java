@@ -149,4 +149,21 @@ public class SpigotMethods {
 
         return effects;
     }
+
+    public static boolean hasSlotLeft(Inventory inventory) {
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (inventory.getItem(i) == null) return true;
+        }
+        return false;
+    }
+
+    public static ItemStack[] insertItem(PlayerInventory inventory, ItemStack item) {
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (inventory.getItem(i) == null) {
+                inventory.setItem(i, item);
+                return inventoryToArray(inventory);
+            }
+        }
+        return null;
+    }
 }

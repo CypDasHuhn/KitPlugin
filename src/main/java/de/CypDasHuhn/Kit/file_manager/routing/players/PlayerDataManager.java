@@ -3,6 +3,7 @@ package de.CypDasHuhn.Kit.file_manager.routing.players;
 import de.CypDasHuhn.Kit.DTO.interface_context.ConfirmationContextDTO;
 import de.CypDasHuhn.Kit.DTO.interface_context.KitContextDTO;
 import de.CypDasHuhn.Kit.DTO.interface_context.OverviewContextDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.ShopContextDTO;
 import de.CypDasHuhn.Kit.KitPluginMain;
 import de.CypDasHuhn.Kit.file_manager.sql.players.PlayerDataManagerSQL;
 import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
@@ -42,5 +43,17 @@ public class PlayerDataManager {
 
     public static KitContextDTO getKitContext(Player player) {
         return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getKitContext(player) : PlayerDataManagerYML.getKitContext(player);
+    }
+
+    public static void setShopContext(Player player, ShopContextDTO context) {
+        if (KitPluginMain.usesSQL) {
+            PlayerDataManagerSQL.setShopContext(player, context);
+        } else {
+            PlayerDataManagerYML.setShopContext(player, context);
+        }
+    }
+
+    public static ShopContextDTO getShopContext(Player player) {
+        return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getShopContext(player) : PlayerDataManagerYML.getShopContext(player);
     }
 }
