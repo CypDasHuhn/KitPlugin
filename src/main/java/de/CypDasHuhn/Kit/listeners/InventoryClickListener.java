@@ -1,10 +1,9 @@
 package de.CypDasHuhn.Kit.listeners;
 
 import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
-import de.CypDasHuhn.Kit.interfaces.Interface;
-import de.CypDasHuhn.Kit.interfaces.skeleton.SkeletonInterfaceListener;
+import de.CypDasHuhn.Kit.interfaces.general.Interface;
+import de.CypDasHuhn.Kit.interfaces.general.SkeletonInterface;
 import de.CypDasHuhn.Kit.shared.Finals;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,18 +20,16 @@ public class InventoryClickListener implements Listener {
         boolean emptyInventory = inventory.equals(Finals.EMPTY);
         if (emptyInventory) return;
 
-        boolean illegalInventory = !Interface.listenerMap.containsKey(inventory);
+        boolean illegalInventory = !Interface.interfaceMap.containsKey(inventory);
         if (illegalInventory) return;
 
         ItemStack clickedItem = event.getCurrentItem();
-        Material clickedMaterial = clickedItem.getType();
+        Material clickedMaterial = clickedItem != null ? clickedItem.getType() : null;
         int clickedSlot = event.getSlot();
-
-        if (clickedItem == null) return;
 
         event.setCancelled(true);
 
-        SkeletonInterfaceListener listener = Interface.listenerMap.get(inventory);
+        SkeletonInterface listener = Interface.interfaceMap.get(inventory);
         listener.listener(event, player, clickedItem, clickedMaterial, clickedSlot);
 
     }

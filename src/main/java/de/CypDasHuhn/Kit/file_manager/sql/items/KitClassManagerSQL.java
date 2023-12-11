@@ -10,4 +10,7 @@ public class KitClassManagerSQL {
 
         return classes;
     }
+
+    public static void setClass(String classColor, String className) {
+    }
 }

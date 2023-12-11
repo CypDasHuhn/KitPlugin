@@ -20,4 +20,12 @@ public class KitListManagerSQL {
     public static List<String> sortKits(List<String> kits) {
         return null;
     }
+
+    public static KitDTO getFirstKit(List<String> kits) {
+        return null;
+    }
+
+    public static KitDTO getLastKit(List<String> kits) {
+        return null;
+    }
 }

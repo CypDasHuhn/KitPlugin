@@ -1,20 +1,10 @@
-name: KitPlugin
-version: 3.0
+name: CustomKitPlugin
+version: 3.3
 main: de.CypDasHuhn.Kit.KitPluginMain
 api-version: '1.20'
 
 commands:
   kit:
     aliases: k
-  kitSet:
-    aliases: [kSet, ks, kits]
-  kitDelete:
-    aliases: [kDelete, kd, kitd]
-  kitEdit:
-    aliases: [kEdit, ke, kite]
-  kitRandom:
-    aliases:  [kRandom, kr, kitr]
-  kitPermission:
-    aliases: [kPermission, kp, kitp]
-  kitLanguage:
-    aliases: [kLanguage, kl, kitl]
+  kitPlugin:
+    aliases: [kp]

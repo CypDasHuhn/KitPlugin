@@ -1,7 +1,7 @@
 package de.CypDasHuhn.Kit.listeners;
 
 import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerListManagerYML;
-import de.CypDasHuhn.Kit.interfaces.Interface;
+import de.CypDasHuhn.Kit.interfaces.general.Interface;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

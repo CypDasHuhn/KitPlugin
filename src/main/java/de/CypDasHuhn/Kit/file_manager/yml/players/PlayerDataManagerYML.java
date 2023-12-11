@@ -1,6 +1,10 @@
 package de.CypDasHuhn.Kit.file_manager.yml.players;
 
-import de.CypDasHuhn.Kit.DTO.OverviewInformationDTO;
+import de.CypDasHuhn.Kit.DTO.KitDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.ConfirmationContextDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.KitContextDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.OverviewContextDTO;
+import de.CypDasHuhn.Kit.file_manager.routing.items.KitManager;
 import de.CypDasHuhn.Kit.file_manager.yml.CustomFiles;
 import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,6 +14,8 @@ public class PlayerDataManagerYML {
     public static final String dataFileDir = "Players";
     public static final String inventoryDir = "Inventory";
     public static final String rowDir = "Row";
+    public static final String confirmationTypeDir = "ConfirmationType";
+    public static final String kitDir = "Kit";
 
     public static void setInventory(Player player, String inventory) {
         // Prework
@@ -59,15 +65,65 @@ public class PlayerDataManagerYML {
         return row;
     }
 
-    public static OverviewInformationDTO getOverviewInformation(Player player) {
+    public static OverviewContextDTO getOverviewContext(Player player) {
         int row = getRow(player);
         String inventory = getInventory(player);
 
-        OverviewInformationDTO data = new OverviewInformationDTO(row);
+        OverviewContextDTO data = new OverviewContextDTO(row);
 
         return data;
     }
-    public static void setOverviewInformation(Player player, OverviewInformationDTO data) {
+    public static void setOverviewContext(Player player, OverviewContextDTO data) {
         setRow(player, data.row);
+    }
+
+    public static ConfirmationContextDTO getConfirmingContext(Player player) {
+        // Prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        String UUID = player.getUniqueId().toString();
+        FileConfiguration playerDataConfig = customFiles[0].getFileConfiguration(UUID,dataFileDir);
+
+        KitContextDTO kitContext = getKitContext(player);
+        String editingType = playerDataConfig.getString(confirmationTypeDir);
+
+        ConfirmationContextDTO context = new ConfirmationContextDTO(kitContext, editingType);
+
+        return context;
+    }
+
+    public static void setConfirmationContext(Player player, ConfirmationContextDTO context) {
+        // Prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        String UUID = player.getUniqueId().toString();
+        FileConfiguration playerDataConfig = customFiles[0].getFileConfiguration(UUID,dataFileDir);
+
+        playerDataConfig.set(confirmationTypeDir, context.confirmationType);
+
+        CustomFiles.saveArray(customFiles);
+
+        setKitContext(player, context.kitContext);
+    }
+
+    public static void setKitContext(Player player, KitContextDTO context) {
+        // Prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        String UUID = player.getUniqueId().toString();
+        FileConfiguration playerDataConfig = customFiles[0].getFileConfiguration(UUID,dataFileDir);
+
+        playerDataConfig.set(kitDir,context.kit.kitName);
+
+        CustomFiles.saveArray(customFiles);
+    }
+
+    public static KitContextDTO getKitContext(Player player) {
+        // Prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        String UUID = player.getUniqueId().toString();
+        FileConfiguration playerDataConfig = customFiles[0].getFileConfiguration(UUID,dataFileDir);
+
+        String kitName = playerDataConfig.getString(kitDir);
+        KitDTO kit = KitManager.getKit(kitName);
+        KitContextDTO context = new KitContextDTO(kit);
+        return context;
     }
 }

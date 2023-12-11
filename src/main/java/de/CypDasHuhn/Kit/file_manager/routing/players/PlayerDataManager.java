@@ -1,20 +1,46 @@
 package de.CypDasHuhn.Kit.file_manager.routing.players;
 
-import de.CypDasHuhn.Kit.DTO.OverviewInformationDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.ConfirmationContextDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.KitContextDTO;
+import de.CypDasHuhn.Kit.DTO.interface_context.OverviewContextDTO;
 import de.CypDasHuhn.Kit.KitPluginMain;
 import de.CypDasHuhn.Kit.file_manager.sql.players.PlayerDataManagerSQL;
 import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
 import org.bukkit.entity.Player;
 
 public class PlayerDataManager {
-    public static OverviewInformationDTO getOverviewInformation(Player player) {
-        return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getOverviewInformation(player) : PlayerDataManagerYML.getOverviewInformation(player);
+    public static OverviewContextDTO getOverviewInformation(Player player) {
+        return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getOverviewInformation(player) : PlayerDataManagerYML.getOverviewContext(player);
     }
-    public static void setOverviewInformation(Player player, OverviewInformationDTO data) {
+    public static void setOverviewInformation(Player player, OverviewContextDTO data) {
         if (KitPluginMain.usesSQL) {
             PlayerDataManagerSQL.setOverviewInformation(player, data);
         } else {
-            PlayerDataManagerYML.setOverviewInformation(player, data);
+            PlayerDataManagerYML.setOverviewContext(player, data);
         }
+    }
+
+    public static void setConfirmationContext(Player player, ConfirmationContextDTO context) {
+        if (KitPluginMain.usesSQL) {
+            PlayerDataManagerSQL.setConfirmationContext(player, context);
+        } else {
+            PlayerDataManagerYML.setConfirmationContext(player, context);
+        }
+    }
+
+    public static ConfirmationContextDTO getConfirmationContext(Player player) {
+        return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getConfirmingContext(player) : PlayerDataManagerYML.getConfirmingContext(player);
+    }
+
+    public static void setKitContext(Player player, KitContextDTO context) {
+        if (KitPluginMain.usesSQL) {
+            PlayerDataManagerSQL.setKitContext(player, context);
+        } else {
+            PlayerDataManagerYML.setKitContext(player, context);
+        }
+    }
+
+    public static KitContextDTO getKitContext(Player player) {
+        return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getKitContext(player) : PlayerDataManagerYML.getKitContext(player);
     }
 }

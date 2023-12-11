@@ -24,6 +24,18 @@ public class KitClassManagerYML {
             }
         }
 
+
+
         return classes;
+    }
+
+    public static void setClass(String classColor, String className) {
+        // prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        FileConfiguration userProvidedConfig = customFiles[0].getFileConfiguration(Finals.USER_PROVIDED_CONFIG,"");
+        // set
+        userProvidedConfig.set(classColor, className);
+
+        CustomFiles.saveArray(customFiles);
     }
 }

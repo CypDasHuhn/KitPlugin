@@ -1,4 +1,4 @@
-package de.CypDasHuhn.Kit.DTO;
+package de.CypDasHuhn.Kit.DTO.Filter;
 
 public class ConditionDTO {
     public String field;

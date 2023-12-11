@@ -18,7 +18,6 @@ public class KitPluginMain extends JavaPlugin {
     private static KitPluginMain plugin;
     public static String pluginName;
     public static boolean usesSQL;
-    private static final String[] COMMANDS = {"kit", "kitSet", "kitDelete", "kitEdit", "kitRandom"};
     private static final Listener[] LISTENERS = {new InventoryClickListener(), new InventoryCloseListener(), new PlayerJoinListener()};
 
     public void onEnable(){
@@ -28,7 +27,7 @@ public class KitPluginMain extends JavaPlugin {
         plugin = this;
         pluginName = getDescription().getName();
 
-        for (String a : COMMANDS) {
+        for (String a : CustomCommand.aliasesMap.keySet()) {
             getCommand(a).setExecutor(new CustomCommand());
             getCommand(a).setTabCompleter(new CustomTabCompleter());
         }

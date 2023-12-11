@@ -51,4 +51,12 @@ public class KitClassManager {
     public static HashMap<String, String> getClasses() {
         return KitPluginMain.usesSQL ? KitClassManagerSQL.getClasses() : KitClassManagerYML.getClasses();
     }
+
+    public static void setClass(String classColor, String className) {
+        if (KitPluginMain.usesSQL) {
+            KitClassManagerSQL.setClass(classColor, className);
+        } else {
+            KitClassManagerYML.setClass(classColor, className);
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package de.CypDasHuhn.Kit.command.general;
 
-import de.CypDasHuhn.Kit.command.skeleton.SkeletonCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

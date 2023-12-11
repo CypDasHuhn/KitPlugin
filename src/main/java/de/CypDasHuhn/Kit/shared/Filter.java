@@ -1,7 +1,11 @@
 package de.CypDasHuhn.Kit.shared;
 
-import de.CypDasHuhn.Kit.DTO.ConditionDTO;
+import de.CypDasHuhn.Kit.DTO.Filter.ConditionDTO;
+import de.CypDasHuhn.Kit.DTO.Filter.ConditionSetDTO;
+import de.CypDasHuhn.Kit.DTO.Filter.OperatorDTO;
+import de.CypDasHuhn.Kit.DTO.Filter.ParenthesesDTO;
 import de.CypDasHuhn.Kit.DTO.KitDTO;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,20 +20,20 @@ import java.util.stream.Stream;
 public class Filter {
 
     public static <T> Predicate<KitDTO> createPredicate(Function<KitDTO, T> valueExtractor, String operator, T value) {
-        BiPredicate<T, T> operatorLogic = getOperatorLogic(operator, value.getClass());
+        BiPredicate<T, T> operatorLogic = getOperatorLogic(operator);
         return kit -> operatorLogic.test(valueExtractor.apply(kit), value);
     }
 
-    private static <T> BiPredicate<T, T> getOperatorLogic(String operator, Class<?> type) {
+    private static <T> BiPredicate<T, T> getOperatorLogic(String operator) {
         return switch (operator) {
             case "IS" -> (a, b) -> a.equals(b);
             case "IS_NOT" -> (a, b) -> !a.equals(b);
             case "HAS" -> (a, b) -> ((List<String>) a).contains(b);
             case "HAS_NOT" -> (a, b) -> !((List<String>) a).contains(b);
-            case "<" -> (a, b) -> Integer.compare((Integer) a, (Integer) b) < 0;
-            case "<=" -> (a, b) -> Integer.compare((Integer) a, (Integer) b) <= 0;
-            case ">" -> (a, b) -> Integer.compare((Integer) a, (Integer) b) > 0;
-            case ">=" -> (a, b) -> Integer.compare((Integer) a, (Integer) b) >= 0;
+            case "<" -> (a, b) -> (Integer) a < (Integer) b;
+            case "<=" -> (a, b) -> (Integer) a <= (Integer) b;
+            case ">" -> (a, b) -> (Integer) a > (Integer) b;
+            case ">=" -> (a, b) -> (Integer) a >= (Integer) b;
             // Add other cases as needed
             default -> (a, b) -> false; // Default case if operator is not recognized
         };
@@ -98,20 +102,258 @@ public class Filter {
         return true;
     }
 
-    public static String[] logicalOperators = new String[]{"(", ")", ""};
-
-    public static String[] correctifyCommands(String[] args) {
-        for
-    }
-
-    public static void parseFilters(String[] args) {
-        List<ConditionDTO> conditions = new ArrayList<ConditionDTO>();
+    public static Object[] convertIntoObjectArray(String[] args) {
+        List<Object> objects = new ArrayList<>();
 
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
 
-            if ()
+            boolean isParentheses = arg.equals("(") || arg.equals(")");
+            boolean isOpenParentheses = arg.equals("(");
+
+            boolean isOperator = arg.equalsIgnoreCase("AND") || arg.equalsIgnoreCase("OR");
+            boolean isAndOperator = arg.equalsIgnoreCase("AND");
+
+            if (isParentheses) {
+                objects.add(new ParenthesesDTO(isOpenParentheses));
+            } else if (isOperator) {
+                objects.add(new OperatorDTO(isAndOperator));
+            } else {
+                boolean enoughArguments = args.length > i + 2;
+                if (!enoughArguments) {
+                    Bukkit.broadcastMessage("// ### missing condition args");
+                    return null;
+                }
+
+                String field = arg;
+                String operator = args[i + 1];
+                String value = args[i + 2];
+
+                if (!isValidCondition(field, operator, value)) {
+                    Bukkit.broadcastMessage("// ### condition not valid");
+                    return null;
+                }
+
+                ConditionDTO condition = new ConditionDTO(field, operator, value);
+
+                objects.add(condition);
+
+                // Increment by 2 to move to the next set of three arguments
+                i += 2;
+            }
         }
+
+        return objects.toArray();
+    }
+
+    /*
+        Bukkit.broadcastMessage("Test-2");
+        if (!(sender instanceof Player player)) {
+            Bukkit.broadcastMessage("KEIN SPILER");
+            return;
+        }
+
+        player.sendMessage("Los!");
+
+        Object[] objects = Filter.convertIntoObjectArray(testCommand);
+
+        for (Object o : objects) {
+            if (o instanceof ConditionDTO c) {
+                System.out.println(c.field);
+                System.out.println(c.operator);
+                System.out.println(c.value);
+            } else if (o instanceof ParenthesesDTO p) {
+                if (p.isOpening) System.out.println("(");
+                else System.out.println(")");
+            } else if (o instanceof OperatorDTO t) {
+                if (t.isAnd) System.out.println("AND");
+                else {
+                    player.sendMessage("§cEINFACH EIN OPERATOR");
+                    System.out.println("OR");
+                }
+            }
+            System.out.println("---");
+        }
+
+        ConditionSetDTO test = Filter.convertIntoConditionSet(objects);
+
+        Bukkit.broadcastMessage("erfolgreich??");
+        */
+
+    public static ConditionSetDTO convertIntoConditionSet(Object[] objects) {
+        ConditionSetDTO main = new ConditionSetDTO(null, new ArrayList<>(), null, null);
+        ConditionSetDTO currentConditionSet = main;
+
+        boolean conditionTurn = true;
+
+        for (int i = 0; i < objects.length; i++) {
+            Object object = objects[i];
+
+            boolean isParentheses = object instanceof ParenthesesDTO;
+            ParenthesesDTO parentheses = isParentheses ? (ParenthesesDTO) object : null;
+
+            boolean isOperator = object instanceof OperatorDTO;
+            if (isOperator) {
+                Bukkit.broadcastMessage("operator detected");
+            }
+            OperatorDTO operator = isOperator ? (OperatorDTO) object : null;
+
+            ConditionDTO condition = (!isParentheses && !isOperator) ? (ConditionDTO) object : null;
+
+            ConditionSetDTO currentConditionSetCopy = currentConditionSet;
+            while (currentConditionSetCopy.parentConditionSet != null) {
+                currentConditionSetCopy = currentConditionSetCopy.parentConditionSet;
+            }
+            main = currentConditionSetCopy;
+
+            if (isOperator) {
+                Bukkit.broadcastMessage("operator detected");
+                if (conditionTurn) {
+                    Bukkit.broadcastMessage("// ### two operators without condition");
+                    return null;
+                }
+
+                if (operator.isAnd) {
+                    if (currentConditionSet.operatorType != null && currentConditionSet.operatorType.equals("OR")) {
+                        Bukkit.broadcastMessage("// ### no 2 operator types / missing parentheses");
+                        return null;
+                    } else {
+                        currentConditionSet.operatorType = "AND";
+                    }
+                } else { // Or Operator
+                    if (currentConditionSet.operatorType != null && currentConditionSet.operatorType.equals("AND")) {
+                        Bukkit.broadcastMessage("// ### no 2 operator types / missing parentheses");
+                        return null;
+                    } else {
+                        currentConditionSet.operatorType = "OR";
+                    }
+                }
+                Bukkit.broadcastMessage("condition should be true now");
+                conditionTurn = true;
+
+            } else if (isParentheses) {
+                if (parentheses.isOpening) {
+                    if (!conditionTurn) {
+                        Bukkit.broadcastMessage("// ### opening parentheses illegal after a condition");
+                        return null;
+                    }
+
+                    currentConditionSet.conditionSets.add(new ConditionSetDTO(null, new ArrayList<>(), null, currentConditionSet));
+                    currentConditionSet = currentConditionSet.conditionSets.get(currentConditionSet.conditionSets.size() - 1);
+                } else { // closed parentheses
+                    if (conditionTurn) {
+                        Bukkit.broadcastMessage("// ### closing parentheses illegal after an operator");
+                        return null;
+                    }
+
+                    currentConditionSet = currentConditionSet.parentConditionSet;
+                }
+            } else { // Condition
+                if (!conditionTurn) {
+                    Bukkit.broadcastMessage("// ### two conditions without a connector");
+                    System.out.println(condition.field+"."+condition.operator+"."+condition.value);
+                    return null;
+                }
+
+                boolean isFirstCondition = currentConditionSet.condition == null;
+                boolean isSecondCondition = !isFirstCondition && currentConditionSet.conditionSets.size() == 0;
+
+                if (isSecondCondition) {
+                    ConditionSetDTO firstCondition = new ConditionSetDTO(currentConditionSet.condition, new ArrayList<>(), null, currentConditionSet);
+                    currentConditionSet.conditionSets.add(firstCondition);
+                    currentConditionSet.condition = null;
+                }
+
+                if (isFirstCondition) {
+                    currentConditionSet.condition = condition;
+                } else { // 2nd/2+th Condition
+                    ConditionSetDTO newCondition = new ConditionSetDTO(condition, new ArrayList<>(), null, currentConditionSet);
+                    currentConditionSet.conditionSets.add(newCondition);
+                }
+
+                i += 2; // skip forward
+                conditionTurn = false;
+            }
+        }
+
+        while (currentConditionSet.parentConditionSet != null) {
+            currentConditionSet = currentConditionSet.parentConditionSet;
+        }
+        main = currentConditionSet;
+
+        return main;
+    }
+
+
+    public static void parseFilters(String[] args) {
+        List<ConditionDTO> conditions = new ArrayList<ConditionDTO>();
+
+        boolean repeat = true;
+        while (repeat) {
+            repeat = false;
+
+            for (int i = 0; i < args.length; i++) {
+                String arg = args[i];
+                boolean noChanges = true;
+
+                arg = arg.trim();
+
+                if (arg.isEmpty()) {
+                    args = removeElement(args, i);
+                    repeat = true;
+                    break;
+                }
+
+                if (arg.startsWith("(") && arg.length() > 1) {
+                    args[i] = "(" + arg.substring(1);
+                    noChanges = false;
+                }
+
+                if (arg.endsWith(")") && arg.length() > 1) {
+                    args[i] = arg.substring(0, arg.length() - 1) + ")";
+                    noChanges = false;
+                }
+
+                if (!noChanges) {
+                    repeat = true;
+                }
+            }
+        }
+
+        /*
+        List<Object> formattedCommand = new ArrayList<>();
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+
+            if (Arrays.asList(objects).contains(arg)) {
+                formattedCommand.add(arg);
+            } else {
+                if (args.length <= i + 2) {
+                    return;
+                }
+
+                String field = arg;
+                String operator = args[i + 1];
+                String value = args[i + 2];
+
+                if (!isValidCondition(field, operator, value)) {
+                    return;
+                }
+
+                ConditionDTO condition = new ConditionDTO(field, operator, value);
+                formattedCommand.add(condition);
+
+                i += 2;
+            }
+        }*/
+
+    }
+
+    private static String[] removeElement(String[] array, int index) {
+        String[] newArray = new String[array.length - 1];
+        System.arraycopy(array, 0, newArray, 0, index);
+        System.arraycopy(array, index + 1, newArray, index, array.length - index - 1);
+        return newArray;
     }
 
     public static boolean isInteger(String str) {

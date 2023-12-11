@@ -1,37 +1,27 @@
-package de.CypDasHuhn.Kit.command;
+package de.CypDasHuhn.Kit.command.kit;
 
+import de.CypDasHuhn.Kit.Actions.KitAction;
 import de.CypDasHuhn.Kit.DTO.KitDTO;
-import de.CypDasHuhn.Kit.command.skeleton.SkeletonCommand;
+import de.CypDasHuhn.Kit.command.general.SkeletonCommand;
 import de.CypDasHuhn.Kit.file_manager.routing.items.KitListManager;
 import de.CypDasHuhn.Kit.file_manager.routing.items.KitManager;
-import de.CypDasHuhn.Kit.shared.Finals;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KitDeleteCommand extends SkeletonCommand {
-    public static final String KIT_DELETE_COMMAND = "kitDelete";
+public class KitGetCommand extends SkeletonCommand {
+    public static final String KIT_GET_COMMAND = "get";
     @Override
     public void command(CommandSender sender, String[] args, String label) {
-        if (!(sender instanceof Player player)) return;
+        Player player = (Player) sender;
 
-        if (args.length < 1) {
-            player.sendMessage("no kitname given");
-            return;
-        }
         String kitName = args[0];
 
-        boolean kitExists = KitListManager.exists(kitName);
-        if (!kitExists) {
-            player.sendMessage("no kitname found");
-            return;
-        }
+        KitDTO kit = KitListManager.specialNames.contains(kitName) ? KitListManager.getKitSpecial(KitListManager.getKits() , kitName) : KitManager.getKit(kitName);
 
-        KitDTO kit = KitManager.getKit(kitName);
-
-        KitManager.deleteKit(kit);
+        KitAction.getKit(player, kit);
     }
 
     @Override

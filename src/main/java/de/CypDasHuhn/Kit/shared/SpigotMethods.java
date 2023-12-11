@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -136,5 +138,15 @@ public class SpigotMethods {
         }
 
         return items;
+    }
+
+    public static List<PotionEffect> getEffects(Player player) {
+        List<PotionEffect> effects = new ArrayList<PotionEffect>();
+
+        for (PotionEffectType potionType : PotionEffectType.values()) {
+            effects.add(player.getPotionEffect(potionType));
+        }
+
+        return effects;
     }
 }

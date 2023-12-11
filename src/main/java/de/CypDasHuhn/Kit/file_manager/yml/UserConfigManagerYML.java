@@ -1,8 +1,7 @@
 package de.CypDasHuhn.Kit.file_manager.yml;
 
-import de.CypDasHuhn.Kit.command.compability.database.ConvertDatabase;
+import de.CypDasHuhn.Kit.compability.database.ConvertDatabase;
 import de.CypDasHuhn.Kit.file_manager.routing.items.KitClassManager;
-import de.CypDasHuhn.Kit.file_manager.yml.items.KitClassManagerYML;
 import de.CypDasHuhn.Kit.shared.Finals;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
