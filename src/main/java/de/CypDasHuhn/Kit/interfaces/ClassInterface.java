@@ -2,11 +2,11 @@ package de.CypDasHuhn.Kit.interfaces;
 
 import de.CypDasHuhn.Kit.Actions.KitAction;
 import de.CypDasHuhn.Kit.DTO.interface_context.KitContextDTO;
-import de.CypDasHuhn.Kit.DTO.interface_context.OverviewContextDTO;
 import de.CypDasHuhn.Kit.file_manager.routing.items.KitClassManager;
 import de.CypDasHuhn.Kit.file_manager.routing.players.PlayerDataManager;
 import de.CypDasHuhn.Kit.interfaces.general.Interface;
 import de.CypDasHuhn.Kit.interfaces.general.SkeletonInterface;
+import de.CypDasHuhn.Kit.shared.Finals;
 import de.CypDasHuhn.Kit.shared.SpigotMethods;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -24,8 +24,6 @@ public class ClassInterface extends SkeletonInterface {
     public static final String interfaceName = "class";
 
     public static final int RETURN_SLOT = 0;
-    public static final String RETURN_TEXTURE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTJkN2E3NTFlYjA3MWUwOGRiYmM5NWJjNWQ5ZDY2ZTVmNTFkYzY3MTI2NDBhZDJkZmEwM2RlZmJiNjhhN2YzYSJ9fX0=";
-
 
     @Override
     public Inventory getInterface(Player player, Object... vars) {
@@ -40,7 +38,7 @@ public class ClassInterface extends SkeletonInterface {
             inventory.setItem(i, backgroundGlassPane);
         }
 
-        HashMap<String, String> classMap = new HashMap<String, String>();
+        HashMap<String, String> classMap = new HashMap<>();
         for (String className : KitClassManager.getClasses().keySet()) {
             String classColor = KitClassManager.getClasses().get(className);
             classMap.put(classColor,className);
@@ -61,7 +59,7 @@ public class ClassInterface extends SkeletonInterface {
 
         }
 
-        inventory.setItem(lastRow+RETURN_SLOT, SpigotMethods.createItem(Material.PLAYER_HEAD, "return", false, null, RETURN_TEXTURE));
+        inventory.setItem(lastRow+RETURN_SLOT, SpigotMethods.createItem(Material.PLAYER_HEAD, "return", false, null, Finals.CustomHeads.RETURN.texture));
 
         return inventory;
     }
@@ -79,7 +77,7 @@ public class ClassInterface extends SkeletonInterface {
         }
 
         if (clickedSlot < 2*9 && !clickedMaterial.equals(Material.GRAY_STAINED_GLASS_PANE) && clickedItem.getItemMeta().getLore() == null) {
-            HashMap<String, String> classMap = new HashMap<String, String>();
+            HashMap<String, String> classMap = new HashMap<>();
             for (String className : KitClassManager.getClasses().keySet()) {
                 String classColor = KitClassManager.getClasses().get(className);
                 classMap.put(classColor,className);

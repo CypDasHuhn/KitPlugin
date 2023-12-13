@@ -56,4 +56,16 @@ public class PlayerDataManager {
     public static ShopContextDTO getShopContext(Player player) {
         return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getShopContext(player) : PlayerDataManagerYML.getShopContext(player);
     }
+
+    public static int getMoney(Player player) {
+        return KitPluginMain.usesSQL ? PlayerDataManagerSQL.getMoney(player) : PlayerDataManagerYML.getMoney(player);
+    }
+
+    public static void setMoney(Player player, int money) {
+        if (KitPluginMain.usesSQL) {
+            PlayerDataManagerSQL.setMoney(player, money);
+        } else {
+            PlayerDataManagerYML.setMoney(player, money);
+        }
+    }
 }

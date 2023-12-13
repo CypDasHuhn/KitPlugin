@@ -7,8 +7,10 @@ import de.CypDasHuhn.Kit.file_manager.routing.items.KitManager;
 import de.CypDasHuhn.Kit.file_manager.routing.players.PlayerDataManager;
 import de.CypDasHuhn.Kit.interfaces.general.Interface;
 import de.CypDasHuhn.Kit.interfaces.general.SkeletonInterface;
+import de.CypDasHuhn.Kit.shared.Finals;
 import de.CypDasHuhn.Kit.shared.SpigotMethods;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,25 +21,29 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShopInterface extends SkeletonInterface {
     public static final String interfaceName = "shop";
 
     public static int RETURN_SLOT = 0;
-    public static String RETURN_TEXTURE = "";
 
     public static int SWITCH_EDITING_SLOT = 8;
-    public static String SWITCH_EDITING_TEXTURE = "";
 
     public static int SWITCH_MOVING_OR_MONEY_SLOT = 4;
-    public static String SWITCH_MOVING_TEXTURE = "";
-    public static String MONEY_TEXTURE = "";
-
     public static int MANAGE_ROW_SLOT = 7;
-    public static String MANAGE_ROW_TEXTURE = "";
+    public static List<String> MANAGE_ROW_LORE = new ArrayList<>() {{
+        add("§5Left click to add Row");
+        add("§5Right click to remove Row");
+    }};
 
     public static int SAVE_SLOT = 6;
-    public static String SAVE_TEXTURE = "";
+
+    public static List<String> ITEM_LORE = new ArrayList<>() {{
+        add("§5Left click to increase the costs");
+        add("§5Right click to reduce the costs");
+        add("§5Shift click for greater difference");
+    }};
 
     @Override
     public Inventory getInterface(Player player, Object... vars) {
@@ -54,43 +60,62 @@ public class ShopInterface extends SkeletonInterface {
             inventory.setItem(i, selectBarGlassPane);
         }
 
-        if (!context.playing) {
+        if (!context.playing && !context.moving) {
             String editingName = context.editing ? "§5Switch to User-Mode" : "§5Switch to Edit-Mode";
-            ItemStack switchEditItem = SpigotMethods.createItem(Material.PLAYER_HEAD,editingName,context.editing,null,SWITCH_EDITING_TEXTURE);
+            String editingTexture = context.editing ? Finals.CustomHeads.EDIT.texture : Finals.CustomHeads.USER.texture;
+            ItemStack switchEditItem = SpigotMethods.createItem(Material.PLAYER_HEAD,editingName,context.editing,null,editingTexture);
             inventory.setItem(lastRow+SWITCH_EDITING_SLOT, switchEditItem);
         }
 
-        else if (context.moving) {
-            ItemStack moveItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"§5Switch Price Mode",true,null,SWITCH_MOVING_TEXTURE);
+        if (context.fromInterface) {
+            ItemStack returnItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"return",false,null, Finals.CustomHeads.RETURN.texture);
+            inventory.setItem(lastRow+RETURN_SLOT, returnItem);
+        }
+
+        if (context.moving) {
+            ItemStack moveItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"§5Switch Price Mode",true,null,Finals.CustomHeads.UNLOCKED.texture);
             inventory.setItem(lastRow+SWITCH_MOVING_OR_MONEY_SLOT, moveItem);
 
-            ItemStack saveItem = SpigotMethods.createItem(Material.PLAYER_HEAD, "§5Save", false, null, SAVE_TEXTURE);
+            ItemStack saveItem = SpigotMethods.createItem(Material.PLAYER_HEAD, "§5Save", false, null, Finals.CustomHeads.APPROVE.texture);
             inventory.setItem(lastRow+SAVE_SLOT, saveItem);
         }
 
         else if (context.editing) {
-            if (context.fromInterface) {
-                ItemStack returnItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"return",false,null,RETURN_TEXTURE);
-                inventory.setItem(lastRow+RETURN_SLOT, returnItem);
-            }
-
-            ItemStack moveItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"§5Switch Move Mode",true,null,SWITCH_MOVING_TEXTURE);
+            ItemStack moveItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"§5Switch Move Mode",true,null,Finals.CustomHeads.LOCKED.texture);
             inventory.setItem(lastRow+SWITCH_MOVING_OR_MONEY_SLOT, moveItem);
 
-            ItemStack rowItem = SpigotMethods.createItem(Material.PLAYER_HEAD, "§5Add row", false, null, MANAGE_ROW_TEXTURE);
+            ItemStack rowItem = SpigotMethods.createItem(Material.PLAYER_HEAD, "§5Add row", false, MANAGE_ROW_LORE, Finals.CustomHeads.ROWS.texture);
             inventory.setItem(lastRow+ MANAGE_ROW_SLOT,rowItem);
         }
 
         else {
-            ItemStack moneyItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"§6"+context.money+"œœ",false,null,MONEY_TEXTURE);
+            ItemStack moneyItem = SpigotMethods.createItem(Material.PLAYER_HEAD,"§6"+context.money+"œœ",false,null,Finals.CustomHeads.MONEY.texture);
             inventory.setItem(lastRow+SWITCH_MOVING_OR_MONEY_SLOT, moneyItem);
         }
 
-        for (int i = 0; i < lastRow; i++) {
+        for (int i = 0; i < context.shop.inventory.length; i++) {
             if (context.shop.inventory[i] != null) {
                 if (!context.moving) {
-                    String lore = "§5" + context.shop.costs[i] + "œœ";
-                    context.shop.inventory[i].setItemMeta(addLore(context.shop.inventory[i].getItemMeta(), lore));
+                    ItemMeta itemMeta = context.shop.inventory[i].getItemMeta();
+
+                    List<String> lore;
+                    if (context.editing) {
+                        lore = new ArrayList<>(ITEM_LORE);
+                    } else {
+                        lore = new ArrayList<>();
+                    }
+
+                    lore.add("§6" + context.shop.costs[i] + "œœ");
+
+                    if (itemMeta.getLore() != null) {
+                        List<String> existingLore = new ArrayList<>(itemMeta.getLore());
+                        existingLore.addAll(lore);
+                        itemMeta.setLore(existingLore);
+                    } else {
+                        itemMeta.setLore(lore);
+                    }
+
+                    context.shop.inventory[i].setItemMeta(itemMeta);
                 }
                 inventory.setItem(i, context.shop.inventory[i]);
             }
@@ -104,10 +129,22 @@ public class ShopInterface extends SkeletonInterface {
         ShopContextDTO context = PlayerDataManager.getShopContext(player);
 
         int lastRow = context.shop.rows*9;
-        boolean isShopItem = clickedSlot > lastRow;
+        boolean isShopItem = clickedSlot < lastRow;
 
+        if (!context.playing) {
+            if (clickedSlot == lastRow+SWITCH_EDITING_SLOT) {
+                context.editing = !context.editing;
+                Interface.openCurrentInterface(player, context);
+                return;
+            } else if (context.fromInterface && clickedSlot == lastRow+RETURN_SLOT) {
+                KitDTO kit = KitManager.getKit(context.shop.kitName);
+                KitContextDTO kitContext = new KitContextDTO(kit);
+                Interface.openTargetInterface(player, EditInterface.interfaceName, kitContext);
+                return;
+            }
+        }
         if (context.moving) {
-            if (clickedSlot > lastRow-1 && clickedSlot < lastRow+9) {
+            if (clickedSlot < lastRow) {
                 event.setCancelled(false);
             }
             else if (clickedSlot == lastRow+SWITCH_MOVING_OR_MONEY_SLOT) {
@@ -120,18 +157,12 @@ public class ShopInterface extends SkeletonInterface {
                     inventory[i] = event.getInventory().getItem(i);
                 }
                 context.shop.inventory = removedCosts(inventory);
+                context.moving = false;
                 Interface.openCurrentInterface(player, context);
             }
         }
         else if (context.editing && !isShopItem) {
-            if (context.fromInterface) {
-                if (clickedSlot == lastRow+RETURN_SLOT) {
-                    KitDTO kit = KitManager.getKit(context.shop.kitName);
-                    KitContextDTO kitContext = new KitContextDTO(kit);
-                    Interface.openTargetInterface(player, EditInterface.interfaceName, kitContext);
-                }
-            }
-            else if (clickedSlot == lastRow+SWITCH_MOVING_OR_MONEY_SLOT) {
+            if (clickedSlot == lastRow+SWITCH_MOVING_OR_MONEY_SLOT) {
                 context.moving = true;
                 Interface.openCurrentInterface(player, context);
             }
@@ -139,7 +170,7 @@ public class ShopInterface extends SkeletonInterface {
                 if (event.isLeftClick()) {
                     if (context.shop.rows < 5) context.shop.rows++;
                 } else if (event.isRightClick()) {
-                    if (context.shop.rows > 1) context.shop.rows--;
+                    if (context.shop.rows > 1 && validRow(context.shop.inventory, context.shop.rows-1)) context.shop.rows--;
                 }
                 Interface.openCurrentInterface(player, context);
             }
@@ -148,10 +179,13 @@ public class ShopInterface extends SkeletonInterface {
             if (context.editing) {
                 int moneyAmount = event.isShiftClick() ? 5 : 1;
                 if (event.isRightClick()) moneyAmount *= -1;
+
                 context.shop.costs[clickedSlot] += moneyAmount;
+
                 if (context.shop.costs[clickedSlot] < 1) {
                     context.shop.costs[clickedSlot] = 1;
                 }
+
                 Interface.openCurrentInterface(player, context);
             } else {
                 int costs = context.shop.costs[clickedSlot];
@@ -161,19 +195,45 @@ public class ShopInterface extends SkeletonInterface {
                     context.money -= costs;
                     ItemStack item = context.shop.inventory[clickedSlot];
                     player.getInventory().setContents(SpigotMethods.insertItem(player.getInventory(), item));
+                    Interface.openCurrentInterface(player, context);
                 }
             }
         }
     }
 
     public static ItemStack[] removedCosts(ItemStack[] inventory) {
-        return null;
+        for (ItemStack item : inventory) {
+            if (item != null) {
+                ItemMeta itemMeta = item.getItemMeta();
+                List<Component> lore = itemMeta.lore();
+
+                if (lore != null) {
+
+                    List<TextComponent> itemLoreAsComponents = ITEM_LORE.stream()
+                            .map(Component::text).toList();
+
+                    lore.removeIf(component -> {
+                        if (component instanceof TextComponent textComponent) {
+                            return textComponent.content().endsWith("œœ");
+                        }
+                        return false;
+                    });
+
+                    lore.removeAll(itemLoreAsComponents);
+                    itemMeta.lore(lore);
+                    item.setItemMeta(itemMeta);
+                }
+            }
+        }
+        return inventory;
     }
 
-    public ItemMeta addLore(ItemMeta meta, String loreString) {
-        List<Component> lore = meta.lore() != null ? meta.lore() : new ArrayList<>();
-        lore.add(Component.text(loreString));
-        meta.lore(lore);
-        return meta;
+    public static boolean validRow(ItemStack[] inventory, int row) {
+        for (int i = inventory.length-1; i > 0; i--) {
+            if (inventory[i] != null) {
+                if (i > row*9) return false;
+            }
+        }
+        return true;
     }
 }

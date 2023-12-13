@@ -47,13 +47,13 @@ public class Filter {
         };
     }
 
-    public static HashMap<String, String[]> fieldOperatorMap = new HashMap<String, String[]>() {{
+    public static HashMap<String, String[]> fieldOperatorMap = new HashMap<>() {{
         put("tag", new String[]{"HAS", "HAS_NOT"});
         put("class", new String[]{"IS", "IS_NOT"});
         put("complexity", new String[]{"IS", "IS_NOT", "<", "<=", ">", ">="});
     }};
 
-    public static HashMap<String, Class<?>> fieldClassMap = new HashMap<String, Class<?>>() {{
+    public static HashMap<String, Class<?>> fieldClassMap = new HashMap<>() {{
         put("tag", String.class);
         put("class", String.class);
         put("complexity", Integer.class);
@@ -85,7 +85,7 @@ public class Filter {
             // no such operator
             return false;
         } else {
-            boolean isInteger = isInteger(value);
+            boolean isInteger = SpigotMethods.isInteger(value);
             if (fieldClassMap.get(field).equals(String.class)) {
                 if (isInteger) {
                     // string not int
@@ -355,17 +355,4 @@ public class Filter {
         System.arraycopy(array, index + 1, newArray, index, array.length - index - 1);
         return newArray;
     }
-
-    public static boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
 }

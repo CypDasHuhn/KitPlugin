@@ -11,19 +11,18 @@ import java.util.List;
 public class KitEditCommand extends SkeletonCommand {
     public static final String KIT_EDIT_COMMAND = "edit";
 
-    public static final HashMap<String, SkeletonCommand> subCommands = new HashMap<String, SkeletonCommand>(){{
+    public static final HashMap<String, SkeletonCommand> subCommands = new HashMap<>() {{
         put(KitEditClassCommand.KIT_EDIT_CLASS_COMMAND, new KitEditClassCommand());
         put(KitEditEffectCommand.KIT_EDIT_EFFECT_COMMAND, new KitEditEffectCommand());
         put(KitEditInventoryCommand.KIT_EDIT_INVENTORY_COMMAND, new KitEditInventoryCommand());
         put(KitEditNameCommand.KIT_EDIT_NAME_COMMAND, new KitEditNameCommand());
+        put(KitEditShopCommand.KIT_EDIT_SHOP_COMMAND, new KitEditShopCommand());
     }};
 
 
     @Override
     public void command(CommandSender sender, String[] args, String label) {
         Player player = (Player) sender;
-
-        String kitName = args[0];
 
         if (args.length < 2) {
             player.sendMessage("no edit mode given");
@@ -43,7 +42,7 @@ public class KitEditCommand extends SkeletonCommand {
 
     @Override
     public List<String> completer(CommandSender sender, String[] args, String label) {
-        List<String> arguments = new ArrayList<String>();
+        List<String> arguments = new ArrayList<>();
 
         if (args.length == 2) {
             List<String> commands = subCommands.keySet().stream().toList();

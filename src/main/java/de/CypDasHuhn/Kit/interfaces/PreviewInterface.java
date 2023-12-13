@@ -23,7 +23,6 @@ public class PreviewInterface extends SkeletonInterface {
     public static final String interfaceName = "Preview";
 
     public static final int RETURN_SLOT = 0;
-    public static final String RETURN_TEXTURE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTJkN2E3NTFlYjA3MWUwOGRiYmM5NWJjNWQ5ZDY2ZTVmNTFkYzY3MTI2NDBhZDJkZmEwM2RlZmJiNjhhN2YzYSJ9fX0=";
     @Override
     public Inventory getInterface(Player player, Object... vars) {
         KitContextDTO context = (KitContextDTO) vars[0];
@@ -36,7 +35,7 @@ public class PreviewInterface extends SkeletonInterface {
         for (int i = 0; i < 6*9; i++) {
             inventory.setItem(i, backgroundGlassPane);
         }
-        inventory.setItem(lastRow+RETURN_SLOT, SpigotMethods.createItem(Material.PLAYER_HEAD, "return", false, null, RETURN_TEXTURE));
+        inventory.setItem(lastRow+RETURN_SLOT, SpigotMethods.createItem(Material.PLAYER_HEAD, "return", false, null, Finals.CustomHeads.RETURN.texture));
 
         for (int i = 0; i <= Finals.OFF_HAND_INDEX; i++) {
             ItemStack item = context.kit.inventory[i];
@@ -51,7 +50,7 @@ public class PreviewInterface extends SkeletonInterface {
             }
         }
 
-        List<String> effectList = new ArrayList<String>();
+        List<String> effectList = new ArrayList<>();
         for (PotionEffect potionEffect : context.kit.effects) {
             String effectString = "§5"+potionEffect.getType().getName()+" "+(potionEffect.getAmplifier()+1);
             effectList.add(effectString);

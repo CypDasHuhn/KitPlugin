@@ -34,4 +34,11 @@ public class PlayerDataManagerSQL {
     public static ShopContextDTO getShopContext(Player player) {
         return null;
     }
+
+    public static int getMoney(Player player) {
+        return 0;
+    }
+
+    public static void setMoney(Player player, int money) {
+    }
 }

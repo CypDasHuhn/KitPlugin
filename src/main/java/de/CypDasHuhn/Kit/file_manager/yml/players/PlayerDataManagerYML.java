@@ -70,11 +70,8 @@ public class PlayerDataManagerYML {
 
     public static OverviewContextDTO getOverviewContext(Player player) {
         int row = getRow(player);
-        String inventory = getInventory(player);
 
-        OverviewContextDTO data = new OverviewContextDTO(row);
-
-        return data;
+        return new OverviewContextDTO(row);
     }
     public static void setOverviewContext(Player player, OverviewContextDTO data) {
         setRow(player, data.row);
@@ -89,9 +86,7 @@ public class PlayerDataManagerYML {
         KitContextDTO kitContext = getKitContext(player);
         String editingType = playerDataConfig.getString(confirmationTypeDir);
 
-        ConfirmationContextDTO context = new ConfirmationContextDTO(kitContext, editingType);
-
-        return context;
+        return new ConfirmationContextDTO(kitContext, editingType);
     }
 
     public static void setConfirmationContext(Player player, ConfirmationContextDTO context) {
@@ -126,8 +121,8 @@ public class PlayerDataManagerYML {
 
         String kitName = playerDataConfig.getString(kitDir);
         KitDTO kit = KitManager.getKit(kitName);
-        KitContextDTO context = new KitContextDTO(kit);
-        return context;
+
+        return new KitContextDTO(kit);
     }
 
     public static void setShopContext(Player player, ShopContextDTO context) {
@@ -164,5 +159,25 @@ public class PlayerDataManagerYML {
         ShopDTO shop = ShopManagerYML.getShop(kitName);
 
         return new ShopContextDTO(shop, playing, editing, moving, fromInterface,money);
+    }
+
+    public static int getMoney(Player player) {
+        // Prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        String UUID = player.getUniqueId().toString();
+        FileConfiguration playerDataConfig = customFiles[0].getFileConfiguration(UUID,dataFileDir);
+
+        return playerDataConfig.getInt("Money");
+    }
+
+    public static void setMoney(Player player, int money) {
+        // Prework
+        CustomFiles[] customFiles = CustomFiles.getCustomFiles(1);
+        String UUID = player.getUniqueId().toString();
+        FileConfiguration playerDataConfig = customFiles[0].getFileConfiguration(UUID,dataFileDir);
+
+        playerDataConfig.set("Money",money);
+
+        CustomFiles.saveArray(customFiles);
     }
 }

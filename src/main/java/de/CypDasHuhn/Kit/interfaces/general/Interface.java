@@ -2,21 +2,21 @@ package de.CypDasHuhn.Kit.interfaces.general;
 
 import de.CypDasHuhn.Kit.file_manager.yml.players.PlayerDataManagerYML;
 import de.CypDasHuhn.Kit.interfaces.*;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 
 public class Interface {
-    public static HashMap<Player, Boolean> opening = new HashMap<Player, Boolean>();
-    public static final HashMap<String, SkeletonInterface> interfaceMap = new HashMap<String, SkeletonInterface>(){{
+    public static HashMap<Player, Boolean> opening = new HashMap<>();
+    public static final HashMap<String, SkeletonInterface> interfaceMap = new HashMap<>() {{
         put(OverviewInterface.interfaceName, new OverviewInterface());
         put(PreviewInterface.interfaceName, new PreviewInterface());
         put(EditInterface.interfaceName, new EditInterface());
         put(ConfirmationInterface.interfaceName, new ConfirmationInterface());
         put(NameInterface.interfaceName, new NameInterface());
         put(ClassInterface.interfaceName, new ClassInterface());
+        put(ShopInterface.interfaceName, new ShopInterface());
     }};
 
     public static void openTargetInterface(Player player, String interfaceName, Object... vars) {

@@ -10,10 +10,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class InventoryClickListener implements Listener {
     @EventHandler
     public void inventoryClickListener(InventoryClickEvent event) {
+        if (event.getClickedInventory() instanceof PlayerInventory) return;
+
         Player player = (Player) event.getWhoClicked();
         String inventory = PlayerDataManagerYML.getInventory(player);
 
@@ -24,7 +27,10 @@ public class InventoryClickListener implements Listener {
         if (illegalInventory) return;
 
         ItemStack clickedItem = event.getCurrentItem();
-        Material clickedMaterial = clickedItem != null ? clickedItem.getType() : null;
+
+        if (clickedItem == null) return;
+
+        Material clickedMaterial = clickedItem.getType();
         int clickedSlot = event.getSlot();
 
         event.setCancelled(true);

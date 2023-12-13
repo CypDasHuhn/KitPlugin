@@ -1,9 +1,9 @@
 package de.CypDasHuhn.Kit.Actions;
 
 import de.CypDasHuhn.Kit.DTO.KitDTO;
-import de.CypDasHuhn.Kit.file_manager.routing.items.KitListManager;
 import de.CypDasHuhn.Kit.file_manager.routing.items.KitManager;
 import de.CypDasHuhn.Kit.shared.SpigotMethods;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -20,6 +20,9 @@ public class KitAction {
         }
         player.addPotionEffects(kit.effects);
 
+        ItemStack shopItem = SpigotMethods.createItem(Material.EMERALD, "§a"+kit.kitName+" shop", true, null, null);
+        player.getInventory().setContents(SpigotMethods.insertItem(player.getInventory(), shopItem));
+
         player.sendMessage("§ayou §5got §athe kit §6"+kit.kitName);
     }
 
@@ -30,6 +33,11 @@ public class KitAction {
     }
 
     public static void updateKitInventory(Player player, KitDTO kit) {
+        if (SpigotMethods.noSlotLeft(player.getInventory())) {
+            player.sendMessage("§cYou need a slot left for the shop item");
+            return;
+        }
+
         kit.inventory = SpigotMethods.inventoryToArray(player.getInventory());
         KitManager.setInventory(kit);
         player.sendMessage("§ayou have updated the §5inventory §aof the kit §6"+kit.kitName);
@@ -49,6 +57,11 @@ public class KitAction {
     }
 
     public static void kitCreate(Player player, String kitName, String kitClass) {
+        if (SpigotMethods.noSlotLeft(player.getInventory())) {
+            player.sendMessage("§cYou need a slot left for the shop item");
+            return;
+        }
+
         ItemStack[] inventory = SpigotMethods.inventoryToArray(player.getInventory());
         Collection<PotionEffect> effects = player.getActivePotionEffects();
 

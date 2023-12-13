@@ -13,11 +13,12 @@ import java.util.List;
 public class KitPluginCommand extends SkeletonCommand {
     public static final String KIT_PLUGIN_COMMAND = "kitPlugin";
 
-    public static final HashMap<String, SkeletonCommand> subCommands = new HashMap<String, SkeletonCommand>(){{
-       put(KitPluginClassCommand.KIT_CLASS_COMMAND, new KitPluginClassCommand());
-       put(KitLanguageCommand.KIT_LANGUAGE_COMMAND, new KitLanguageCommand());
-       put(KitPluginPermissionCommand.KIT_PERMISSION_COMMAND, new KitPluginPermissionCommand());
-       put(KitPluginHelpCommand.KIT_PLUGIN_HELP_COMMAND, new KitPluginHelpCommand());
+    public static final HashMap<String, SkeletonCommand> subCommands = new HashMap<>() {{
+        put(KitPluginClassCommand.KIT_CLASS_COMMAND, new KitPluginClassCommand());
+        put(KitLanguageCommand.KIT_LANGUAGE_COMMAND, new KitLanguageCommand());
+        put(KitPluginPermissionCommand.KIT_PERMISSION_COMMAND, new KitPluginPermissionCommand());
+        put(KitPluginHelpCommand.KIT_PLUGIN_HELP_COMMAND, new KitPluginHelpCommand());
+        put(KitPluginMoneyCommand.MONEY_COMMAND, new KitPluginMoneyCommand());
     }};
 
     @Override
@@ -40,12 +41,12 @@ public class KitPluginCommand extends SkeletonCommand {
 
     @Override
     public List<String> completer(CommandSender sender, String[] args, String label) {
-        List<String> arguments = new ArrayList<String>();
+        List<String> arguments = new ArrayList<>();
 
         if (args.length == 1) {
             List<String> commands = new ArrayList<>(subCommands.keySet().stream().toList());
 
-            boolean isPermissioned = PermissionManager.isPermissioned(((Player)sender).getName());
+            boolean isPermissioned = PermissionManager.isPermissioned(sender.getName());
             if (!isPermissioned) commands.remove(KitPluginPermissionCommand.KIT_PERMISSION_COMMAND);
 
             arguments.addAll(commands);
@@ -53,7 +54,7 @@ public class KitPluginCommand extends SkeletonCommand {
 
         if (args.length > 1) {
             String commandName = args[0];
-            boolean commandExists = !subCommands.keySet().contains(commandName);
+            boolean commandExists = !subCommands.containsKey(commandName);
             if (commandExists) return arguments;
 
             SkeletonCommand command = subCommands.get(commandName);
