@@ -26,7 +26,6 @@ public class ClassInterface extends SkeletonInterface {
     public static final int RETURN_SLOT = 0;
     public static final String RETURN_TEXTURE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTJkN2E3NTFlYjA3MWUwOGRiYmM5NWJjNWQ5ZDY2ZTVmNTFkYzY3MTI2NDBhZDJkZmEwM2RlZmJiNjhhN2YzYSJ9fX0=";
 
-
     @Override
     public Inventory getInterface(Player player, Object... vars) {
         KitContextDTO context = (KitContextDTO) vars[0];
