@@ -6,7 +6,6 @@ import de.CypDasHuhn.Kit.file_manager.routing.items.KitClassManager;
 import de.CypDasHuhn.Kit.file_manager.routing.players.PlayerDataManager;
 import de.CypDasHuhn.Kit.interfaces.general.Interface;
 import de.CypDasHuhn.Kit.interfaces.general.SkeletonInterface;
-import de.CypDasHuhn.Kit.shared.Finals;
 import de.CypDasHuhn.Kit.shared.SpigotMethods;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
