@@ -52,10 +52,12 @@ public class KitManagerYML {
                     SpawnEggMeta spawnEggMeta = (SpawnEggMeta) itemMeta;
 
                     EntityType spawnType = spawnEggMeta.getCustomSpawnedType();
-                    String displayMaterial = kit.inventory[i].getType().name();
+                    if (spawnType != null) {
+                        String displayMaterial = kit.inventory[i].getType().name();
 
-                    kitConfig.set("Eggs." + i + ".Spawn", spawnType.toString());
-                    kitConfig.set("Eggs." + i + ".Display", displayMaterial);
+                        kitConfig.set("Eggs." + i + ".Spawn", spawnType.toString());
+                        kitConfig.set("Eggs." + i + ".Display", displayMaterial);
+                    }
                 }
 
                 kitConfig.set("Inventory." + i, kit.inventory[i]);
@@ -96,22 +98,26 @@ public class KitManagerYML {
             inventory[i] = kitConfig.getItemStack("Inventory."+i);
             if (inventory[i] != null) {
                 ItemMeta itemMeta = inventory[i].getItemMeta();
+                Material m = inventory[i].getType();
                 if (itemMeta instanceof SpawnEggMeta spawnEggMeta) {
                     String spawnType = kitConfig.getString("Eggs."+i+".Spawn");
-                    String displayMaterial = kitConfig.getString("Eggs."+i+".Display");
 
-                    if (spawnType != null && displayMaterial != null) {
-                        Material egg = Material.matchMaterial(displayMaterial);
-                        spawnEggMeta.setCustomSpawnedType(EntityType.valueOf(spawnType));
+                    if (spawnType != null) {
+                        String displayMaterial = kitConfig.getString("Eggs."+i+".Display");
 
-                        inventory[i].setItemMeta(spawnEggMeta);
-                        inventory[i].setType(egg);
+                        if (displayMaterial != null) {
+                            Material egg = Material.matchMaterial(displayMaterial);
+                            spawnEggMeta.setCustomSpawnedType(EntityType.valueOf(spawnType));
+
+                            inventory[i].setItemMeta(spawnEggMeta);
+                            inventory[i].setType(egg);
+                        }
                     }
                 }
             }
         }
 
-        List<PotionEffect> effects = new ArrayList<PotionEffect>();
+        List<PotionEffect> effects = new ArrayList<>();
         for (PotionEffectType potionType: PotionEffectType.values()) {
             int amplifier = kitConfig.getInt("Effects."+potionType);
             boolean existingEffect = amplifier > 0;
