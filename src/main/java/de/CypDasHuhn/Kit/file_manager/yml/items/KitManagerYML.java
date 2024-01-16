@@ -31,6 +31,9 @@ public class KitManagerYML {
 
         kitConfig.set("Class", kit.kitClass);
 
+        for (PotionEffectType effect : PotionEffectType.values()) {
+            kitConfig.set("Effects."+effect, 0);
+        }
         for (PotionEffect effect : kit.effects) {
             kitConfig.set("Effects."+effect.getType(), effect.getAmplifier()+1);
         }
@@ -60,8 +63,8 @@ public class KitManagerYML {
                     }
                 }
 
-                kitConfig.set("Inventory." + i, kit.inventory[i]);
             }
+            kitConfig.set("Inventory." + i, kit.inventory[i]);
         }
 
         CustomFiles.saveArray(customFiles);

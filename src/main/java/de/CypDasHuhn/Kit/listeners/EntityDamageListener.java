@@ -28,7 +28,7 @@ public class EntityDamageListener implements Listener {
                     setAndClearMetadata(player, attackingPlayer.getName(), emptyTime);
                 } else if (attackingEntity != null) {
                     List<MetadataValue> metadata = attackingEntity.getMetadata("player");
-                    String playerName = metadata.size() > 0 ? (String) metadata.get(0).value() : null;
+                    String playerName = !metadata.isEmpty() ? (String) metadata.get(0).value() : null;
                     if (playerName != null) setAndClearMetadata(player, playerName, emptyTime);
                 }
             }

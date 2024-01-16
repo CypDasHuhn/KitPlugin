@@ -182,8 +182,8 @@ public class ShopInterface extends SkeletonInterface {
 
                 context.shop.costs[clickedSlot] += moneyAmount;
 
-                if (context.shop.costs[clickedSlot] < 1) {
-                    context.shop.costs[clickedSlot] = 1;
+                if (context.shop.costs[clickedSlot] < 0) {
+                    context.shop.costs[clickedSlot] = 0;
                 }
 
                 Interface.openCurrentInterface(player, context);

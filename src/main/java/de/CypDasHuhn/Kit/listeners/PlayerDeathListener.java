@@ -13,7 +13,7 @@ import org.bukkit.metadata.MetadataValue;
 import java.util.List;
 
 public class PlayerDeathListener implements Listener {
-    public static int moneyReward = 100;
+    public static int moneyReward = 25;
     @EventHandler
     public void listener(PlayerDeathEvent event) {
         Player player = event.getPlayer();
@@ -21,7 +21,7 @@ public class PlayerDeathListener implements Listener {
         MoneyAction.setMoney(player, 0, null);
 
         List<MetadataValue> metadata = player.getMetadata("player");
-        String playerName = metadata.size() > 0 ? (String) metadata.get(0).value() : null;
+        String playerName = !metadata.isEmpty() ? (String) metadata.get(0).value() : null;
         if (playerName != null) {
             Player attackingPlayer = Bukkit.getPlayer(playerName);
 
